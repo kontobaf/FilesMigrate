@@ -2,7 +2,8 @@ from watchdog.observers import Observer
 import os
 import time
 from watchdog.events import FileSystemEventHandler
-
+cnt_pht = 0
+cnt_vid = 0
 
 
 class Handler(FileSystemEventHandler):
@@ -13,10 +14,12 @@ class Handler(FileSystemEventHandler):
 				file = folder_track + "/" + filename
 				new_path = folder_dest + "/Photos/" + filename
 				os.rename(file, new_path)
+				cnt_pht += 1
 			elif len(extension) > 1 and extension[1].lower() == "mp4":
 				file = folder_track + "/" + filename
 				new_path = folder_dest + "/Videos/" + filename
 				os.rename(file, new_path)
+				cnt_vid += 1
 
 
 # Папка что отслеживается
@@ -36,5 +39,7 @@ try:
 		time.sleep(10)
 except KeyboardInterrupt:
 	observer.stop()
+	print("Всего фото перемещено ",+cnt_pht)
+	print("Всего видео перемещено ",+cnt_vid)
 
 observer.join()
